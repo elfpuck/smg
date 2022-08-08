@@ -1,0 +1,45 @@
+# 全局变量
+variables:
+name: example_exec
+version: 0.0.1
+# 注册Command
+command:
+  date:
+    aliases:
+      - dt
+    usage: 时间格式化
+    category: example
+    flag:
+      format:
+        usage: format date
+        aliases:
+          - f
+        value: "%Y-%m-%d %H:%M:%S" 
+    action:
+      type: exec
+      exec:
+        script:
+          - date +%s
+          - date '+{{unescaped .flags.format }}'  
+    sub_command:
+      unix:
+        aliases:
+          - u
+        usage: format  to unix
+        action:
+          type: exec
+          exec: 
+            script:
+            - date -j -f "{{ .flags.format|unescaped }}" "{{join .args " " }}" +%s
+            - echo '{{join .args " "}}'
+      format:
+        aliases:
+          - f
+        usage: unix to format 
+        action:
+          type: exec
+          exec: 
+            script:
+            - echo '{{join .args " "}}'
+            - date -r "{{join .args " " }}" "+{{ .flags.format|unescaped }}"
+            

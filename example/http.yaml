@@ -1,0 +1,26 @@
+# 全局变量
+variables:
+  echoServer: http://127.0.0.1:11111
+name: example_http
+version: 0.0.1
+# 注册Command
+command:
+  http:
+    usage: http example 
+    category: example
+    sub_command:
+      echoServer:
+        usage: echoServer
+        action: 
+          type: http
+          http:
+            method: post
+            url: "{{ .echoServer }}"
+            header:
+              user-agent: ["testsmg/0.0.1"]
+              cookie: ["a=1", "b=2"]
+              Content-Type: [application/json']
+            data-urlencode:
+              - 'du1=1'
+              - 'du2=2'
+            

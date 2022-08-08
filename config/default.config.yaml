@@ -1,0 +1,17 @@
+# global variables
+variables:
+
+# smg config
+conf:
+  usage: 高度可定制化命令行工具
+  description: 高度可定制化命令行工具, 支持 mysql、http、shell 等。
+
+# logger
+logger:
+  level: debug
+# remote registry config 
+registry:
+  provider: 'consul'
+  address: ''
+  token: ''
+  prefix: 'test'

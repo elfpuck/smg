@@ -1,0 +1,35 @@
+# 全局变量
+variables:
+  address: https://consul.xxx.com
+  token: abf17224-256a-42a0-378d-456c57f5acad
+name: example_consul
+version: 0.0.1
+# 注册Command
+command:
+  consul:
+    usage: consul get  
+    category: example
+    sub_command:
+      get:
+        aliases: [get]
+        usage: 获取consul数据
+        action:
+          type: consul
+          output: console
+          consul:
+            address: "{{ .address }}"
+            token: "{{ .token }} "
+            method: get
+            key: test/a/s
+      PUT:
+        aliases: [put]
+        usage: 修改consul数据
+        action:
+          type: consul
+          output: console
+          consul:
+            address: "{{ .address }}"
+            token: "{{ .token }} "
+            method: SET
+            key: test/a/s/put
+            value: abcdefg
