@@ -7,7 +7,6 @@ import (
 	"smg/core/logger"
 	"smg/core/tools"
 	"smg/smg"
-	"sort"
 	"strings"
 
 	"github.com/urfave/cli/v2"
@@ -49,9 +48,6 @@ func main() {
 		logger.Fatal("load Modules Err: ", err)
 	}
 	app.Commands = append(app.Commands, loadCmd...)
-
-	sort.Sort(cli.FlagsByName(app.Flags))
-	sort.Sort(cli.CommandsByName(app.Commands))
 
 	app.Commands = append(app.Commands, smg.SystemCommand())
 	app.Metadata = config.Config.Variables

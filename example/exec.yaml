@@ -21,7 +21,7 @@ command:
         script:
           - date +%s
           - date '+{{unescaped .flags.format }}'  
-    sub_command:
+    subCommand:
       unix:
         aliases:
           - u

@@ -9,7 +9,7 @@ command:
   consul:
     usage: consul get  
     category: example
-    sub_command:
+    subCommand:
       get:
         aliases: [get]
         usage: 获取consul数据

@@ -8,7 +8,7 @@ command:
   mysql:
     usage: mysql example
     category: example
-    sub_command:
+    subCommand:
       select:
         aliases: [s]
         usage: example select

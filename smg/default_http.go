@@ -140,7 +140,7 @@ func actionToolsHttp(ctx *cli.Context, cfg *httpConfig, tplData any) error {
 
 	// data-raw
 	if cfg.DR != "" {
-		payload = strings.NewReader(cfg.DR)
+		payload = strings.NewReader(tools.DrawTpl(tplData, cfg.DR))
 	}
 	// data-urlencode
 	if len(cfg.DU) != 0 {
@@ -219,9 +219,11 @@ func actionToolsHttp(ctx *cli.Context, cfg *httpConfig, tplData any) error {
 	}
 
 	// user-agent
-	if cfg.UserAgent != "" {
-		req.Header.Add("User-Agent", tools.DrawTpl(tplData, cfg.UserAgent))
+	if cfg.UserAgent == "" {
+		cfg.UserAgent = fmt.Sprintf("%s/%s", config.Config.Conf.Name, config.Config.Conf.Version)
 	}
+	req.Header.Add("User-Agent", fmt.Sprintf("%s/%s", config.Config.Conf.Name, config.Config.Conf.Version))
+
 	// Content-Type
 	if cfg.ContentType != "" {
 		req.Header.Add("Content-Type", tools.DrawTpl(tplData, cfg.ContentType))
@@ -254,13 +256,13 @@ func actionToolsHttp(ctx *cli.Context, cfg *httpConfig, tplData any) error {
 }
 
 type httpConfig struct {
-	outputConfig
+	outputConfig `yaml:",inline"`
 	Method       string              `yaml:"method"`
 	FlagHeader   cli.StringSlice     `yaml:"-"`
 	Header       map[string][]string `yaml:"header"`
 	FlagCookie   cli.StringSlice     `yaml:"-"`
 	Cookie       []string            `yaml:"-"`
-	Referer      string              `yaml:"referer"`
+	Referer      string              `yaml:"-"`
 	UserAgent    string              `yaml:"-"`
 	DR           string              `yaml:"data-raw"`
 	FlagDU       cli.StringSlice     `yaml:"-"`

@@ -8,7 +8,7 @@ command:
   http:
     usage: http example 
     category: example
-    sub_command:
+    subCommand:
       echoServer:
         usage: echoServer
         action: 

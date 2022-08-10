@@ -7,11 +7,16 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-func Action(ca *CommandAction, smg *Smg) cli.ActionFunc {
+func Action(cmd *Command, smg *Smg) cli.ActionFunc {
+	ca := cmd.Action
 	if ca == nil {
 		return nil
 	}
 	return func(ctx *cli.Context) error {
+		if cmd.ArgsMin > ctx.Args().Len() {
+			cli.ShowSubcommandHelp(ctx)
+			return nil
+		}
 		logger.Debug("action:")
 		logger.Debug("app path: ", smg.Path)
 		logger.Debug("app name: ", ctx.App.Name)
@@ -82,8 +87,7 @@ func getFlags(ctx *cli.Context) tools.H {
 
 type CommandAction struct {
 	Type      string
-	Variables tools.H
-	Output    string
+	Variables tools.H `yaml:"-"`
 	Exec      *execConfig   `yaml:"exec"`
 	Http      *httpConfig   `yaml:"http"`
 	Mysql     *mysqlConfig  `yaml:"mysql"`

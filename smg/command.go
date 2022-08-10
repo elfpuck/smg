@@ -10,7 +10,7 @@ import (
 
 var RegistryCommands sync.Map
 
-func RenderCommand(subCommand map[string]Command, smg *Smg, root string) []*cli.Command {
+func RenderCommand(subCommand map[string]*Command, smg *Smg, root string) []*cli.Command {
 	result := []*cli.Command{}
 	for k, v := range subCommand {
 		if v.Name == "" {
@@ -25,12 +25,12 @@ func RenderCommand(subCommand map[string]Command, smg *Smg, root string) []*cli.
 			Name:        v.Name,
 			Aliases:     v.Aliases,
 			Usage:       v.Usage,
-			Description: v.Description,
+			Description: v.Desc,
 			ArgsUsage:   v.ArgsUsage,
 			Category:    v.Category,
 			Flags:       v.ParseFlags(),
 			Subcommands: RenderCommand(v.Subcommand, smg, tools.JoinSlash(root, v.Name)),
-			Action:      Action(v.Action, smg),
+			Action:      Action(v, smg),
 		}
 
 		result = append(result, &command)
@@ -54,16 +54,17 @@ func (cmd *Command) ParseFlags() (res []cli.Flag) {
 }
 
 type Command struct {
-	Name        string
+	Name        string `yaml:"-"`
 	Aliases     []string
 	Usage       string
 	Flag        map[string]CommandFlag
-	Description string
-	ArgsUsage   string
+	Desc string	
+	ArgsUsage   string `yaml:"argsUsage"`
+	ArgsMin     int    `yaml:"argsMin"`
 	Category    string `yaml:"category"`
 	Action      *CommandAction
 	// 自定义参数
-	Subcommand map[string]Command `yaml:"sub_command"`
+	Subcommand map[string]*Command `yaml:"subCommand"`
 }
 
 type CommandFlag struct {

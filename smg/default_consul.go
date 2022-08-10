@@ -157,11 +157,11 @@ func actionToolsConsul(ctx *cli.Context, cfg *consulConfig, tplData any) error {
 }
 
 type consulConfig struct {
-	outputConfig
-	Address string `yaml:"address"`
-	Prefix  string `yaml:"prefix"`
-	Key     string `yaml:"key"`
-	Token   string `yaml:"token"`
-	Method  string `yaml:"method"`
-	Value   string `yaml:"value"`
+	outputConfig `yaml:",inline"`
+	Address      string `yaml:"address"`
+	Prefix       string `yaml:"prefix"`
+	Key          string `yaml:"key"`
+	Token        string `yaml:"token"`
+	Method       string `yaml:"method"`
+	Value        string `yaml:"value"`
 }

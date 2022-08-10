@@ -90,10 +90,10 @@ func UnmarshalSmg(b []byte, path string) (Smg, error) {
 
 type Smg struct {
 	Variables tools.H `yaml:"variables"`
-	Id        string
+	Id        string  `yaml:"-"`
 	Name      string
 	Desc      string
-	Path      string
+	Path      string `yaml:"-"`
 	Version   string
-	Command   map[string]Command `yaml:"command"`
+	Command   map[string]*Command `yaml:"command"`
 }

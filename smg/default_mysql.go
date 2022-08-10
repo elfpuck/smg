@@ -141,8 +141,8 @@ func actionToolsMysql(ctx *cli.Context, cfg *mysqlConfig, tplData any) error {
 }
 
 type mysqlConfig struct {
-	outputConfig
-	mysql.Config
-	Dsn   string `yaml:"dsn"`
-	Query string `yaml:"query"`
+	outputConfig `yaml:",inline"`
+	mysql.Config `yaml:",inline"`
+	Dsn          string `yaml:"dsn"`
+	Query        string `yaml:"query"`
 }

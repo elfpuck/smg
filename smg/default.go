@@ -47,6 +47,8 @@ func tableRender(header []string) table.Writer {
 }
 
 func outputFn(cfg *outputConfig, res []byte) (err error) {
+	logger.Debug("output: ", cfg.Output)
+	logger.Debug("output path: ", cfg.ResultPath)
 	if cfg.ResultPath == "" {
 		cfg.ResultPath = "@pretty"
 	}
@@ -75,5 +77,5 @@ func outputFn(cfg *outputConfig, res []byte) (err error) {
 
 type outputConfig struct {
 	Output     string `yaml:"output"`
-	ResultPath string `yaml:"result-path"`
+	ResultPath string `yaml:"resultPath"`
 }
