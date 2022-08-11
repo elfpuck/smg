@@ -1,6 +1,10 @@
 # SMG
 > 什么鬼, 可配置化命令行工具, 支持 http、mysql、consul、exec等操作。
 
+# 配置文件
+```
+
+```
 ## smgEchoServer
 > 返回请求的内容,用于排查与调试
 ```
@@ -64,7 +68,7 @@ command:
         query:
       # consul 
       consul:
-        # 输出位置,默认不填, std
+        # 输出文件,默认不填, std
         output:
         # 输出后json格式优化与取值,使用gjson实现
         resultPath:
@@ -76,7 +80,7 @@ command:
         key:
         value: 
       http:
-        # 输出位置,默认不填, std
+        # 输出文件,默认不填, std
         output:
         # 输出后json格式优化与取值,使用gjson实现
         resultPath:

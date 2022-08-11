@@ -4,7 +4,10 @@ variables:
 # smg config
 conf:
   usage: 高度可定制化命令行工具
-  description: 高度可定制化命令行工具, 支持 mysql、http、shell 等。
+  desc: 高度可定制化命令行工具, 支持 mysql、http、shell 等。
+  echoAddress: "127.0.0.1:11111"
+  tableLen: 
+  subCommandLen: 
 
 # logger
 logger:

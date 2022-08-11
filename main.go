@@ -14,7 +14,7 @@ import (
 
 func main() {
 	// log file
-	f, err := os.OpenFile(path.Join(tools.AbsDir(path.Join(config.ConfigDir, config.LogDir)), "access.log"), os.O_APPEND|os.O_RDWR|os.O_CREATE, 0644)
+	f, err := os.OpenFile(path.Join(tools.AbsDir(path.Join(config.ConfigDir, config.LogDir)), config.LogPath), os.O_APPEND|os.O_RDWR|os.O_CREATE, 0644)
 	if err != nil {
 		panic(err)
 	}
@@ -30,7 +30,7 @@ func main() {
 	app := cli.App{
 		Name:        config.Config.Conf.Name,
 		Usage:       config.Config.Conf.Usage,
-		Description: config.Config.Conf.Description,
+		Description: config.Config.Conf.Desc,
 		Authors:     []*cli.Author{},
 		Flags:       []cli.Flag{},
 		Commands:    []*cli.Command{},

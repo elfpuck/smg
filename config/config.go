@@ -19,6 +19,7 @@ const (
 	ConfigDir         = "~/.smg"
 	CacheDir          = "cache"
 	LogDir            = "log"
+	LogPath           = "access.log"
 	OutputDir         = "output"
 	ConfigPath        = "config.yaml"
 	defaultConfigPath = "default.config.yaml"
@@ -27,7 +28,9 @@ const (
 var (
 	Config = SmgConfig{
 		Logger: &SmgConfigLog{},
-		Conf:   &SmgConfigConf{},
+		Conf:   &SmgConfigConf{
+			EchoAddress: "127.0.0.1:11111",
+		},
 	}
 )
 
@@ -55,7 +58,7 @@ func init() {
 	}
 
 	Config.Conf.Name = "smg"
-	Config.Conf.Version = "0.0.1"
+	Config.Conf.Version = "0.0.3"
 
 	rp, err := registry.AddRemoteProvider(&registry.Config{
 		Provider: "local",
@@ -83,10 +86,13 @@ type SmgConfig struct {
 }
 
 type SmgConfigConf struct {
-	Name        string
-	Usage       string
-	Description string
-	Version     string
+	Name          string `yaml:"-"`
+	Usage         string
+	Desc          string
+	Version       string `yaml:"-"`
+	EchoAddress   string `yaml:"echoAddress"`
+	TableLen      int    `yaml:"tableLen"`
+	SubCommandLen int    `yaml:"subCommandLen"`
 }
 
 type SmgConfigLog struct {

@@ -23,7 +23,7 @@ func actionCacheList() func(ctx *cli.Context) error {
 		if err != nil {
 			return err
 		}
-		t := tableRender([]string{"name", "path", "version", "desc", "commands"})
+		t := tableRender([]string{"name", "path", "version", "commands", "desc"})
 		for _, v := range kvs {
 			if path.Ext(v.Key) != ".yaml" {
 				continue
@@ -34,9 +34,10 @@ func actionCacheList() func(ctx *cli.Context) error {
 			if err := yaml.Unmarshal(v.Value, &smg); err != nil {
 				continue
 			}
-			t.AppendRow([]any{smg.Name, smg.Path, smg.Version, smg.Desc, smg.cmdShow(5)})
+			t.AppendRow([]any{smg.Name, smg.Path, smg.Version, smg.cmdShow(config.Config.Conf.SubCommandLen), smg.Desc})
 			t.AppendSeparator()
 		}
+		t.SetAllowedRowLength(config.Config.Conf.TableLen)
 		t.Render()
 		return nil
 	}

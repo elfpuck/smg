@@ -17,8 +17,7 @@ import (
 )
 
 const (
-	echoServer     = "echoServer.pid"
-	defaultAddress = "127.0.0.1:11111"
+	echoServer = "echoServer.pid"
 )
 
 func defaultEchoServer() *cli.Command {
@@ -35,7 +34,7 @@ func actionEchoServer() func(ctx *cli.Context) error {
 	return func(ctx *cli.Context) error {
 		address := ctx.Args().First()
 		if address == "" {
-			address = defaultAddress
+			address = config.Config.Conf.EchoAddress
 		}
 		if pid, err := config.LocalRp.Get(echoServer); err == nil {
 			logger.CommonFatal("echoServer started! pid: " + string(pid))

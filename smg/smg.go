@@ -55,7 +55,6 @@ func LoadModules(filename string) ([]*cli.Command, error) {
 func (smg *Smg) cmdShow(n int) string {
 	cmds := []string{}
 	for k, v := range smg.Command {
-		temp := k + ":("
 		tempArr := []string{}
 		for k1 := range v.Subcommand {
 			if len(tempArr) >= n {
@@ -64,8 +63,12 @@ func (smg *Smg) cmdShow(n int) string {
 			}
 			tempArr = append(tempArr, k1)
 		}
-		temp += strings.Join(tempArr, ",")
-		temp += ")"
+		temp := k
+		if n != 0 {
+			temp += ":("
+			temp += strings.Join(tempArr, ",")
+			temp += ")"
+		}
 		cmds = append(cmds, temp)
 	}
 	return strings.Join(cmds, "\n")
