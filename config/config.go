@@ -28,8 +28,12 @@ const (
 var (
 	Config = SmgConfig{
 		Logger: &SmgConfigLog{},
-		Conf:   &SmgConfigConf{
+		Conf: &SmgConfigConf{
 			EchoAddress: "127.0.0.1:11111",
+		},
+		Translate: &SmgConfigTranslate{
+			YD:     &TranslateYD{},
+			YDFree: &TranslateYDFree{},
 		},
 	}
 )
@@ -79,10 +83,34 @@ func init() {
 }
 
 type SmgConfig struct {
-	Variables tools.H          `yaml:"variables"`
-	Conf      *SmgConfigConf   `yaml:"conf"`
-	Registry  *registry.Config `yaml:"registry"`
-	Logger    *SmgConfigLog    `yaml:"logger"`
+	Variables tools.H             `yaml:"variables"`
+	Conf      *SmgConfigConf      `yaml:"conf"`
+	Registry  *registry.Config    `yaml:"registry"`
+	Logger    *SmgConfigLog       `yaml:"logger"`
+	Translate *SmgConfigTranslate `yaml:"translate"`
+}
+
+type SmgConfigTranslate struct {
+	YD     *TranslateYD     `yaml:"yd"`
+	YDFree *TranslateYDFree `yaml:"ydFree"`
+}
+
+type TranslateYD struct {
+	Query     string
+	Url       string `yaml:"url"`
+	From      string `yaml:"from"`
+	To        string `yaml:"to"`
+	AppKey    string `yaml:"appKey"`
+	AppSecret string `yaml:"appSecret"`
+}
+type TranslateYDFree struct {
+	Query     string
+	Url       string `yaml:"url"`
+	From      string `yaml:"from"`
+	To        string `yaml:"to"`
+	Referer   string `yaml:"referer"`
+	UserAgent string `yaml:"userAgent"`
+	Cookie    string `yaml:"cookie"`
 }
 
 type SmgConfigConf struct {

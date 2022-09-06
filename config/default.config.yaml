@@ -18,3 +18,12 @@ registry:
   address: ''
   token: ''
   prefix: 'test'
+
+translate:
+  yd:
+    url: 'https://openapi.youdao.com/api'
+    appKey: ''
+    appSecret: ''
+  ydFree:
+    url: ''
+    

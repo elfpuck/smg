@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"mime/multipart"
 	"net/http"
+	"net/url"
 	"os"
 	"path/filepath"
 	"smg/config"
@@ -103,6 +104,13 @@ func defaultHttp() *cli.Command {
 			},
 		},
 		Action: func(ctx *cli.Context) error {
+			if cfg.URL == "" {
+				cfg.URL = strings.Join(ctx.Args().Slice(), "")
+			}
+			if cfg.URL == "" {
+				cli.ShowSubcommandHelp(ctx)
+				return nil
+			}
 			return actionToolsHttp(ctx, cfg, nil)
 		},
 	}
@@ -111,13 +119,6 @@ func defaultHttp() *cli.Command {
 func actionToolsHttp(ctx *cli.Context, cfg *httpConfig, tplData any) error {
 	if tplData == nil {
 		tplData = ctx.App.Metadata
-	}
-	if cfg.URL == "" {
-		cfg.URL = strings.Join(ctx.Args().Slice(), "")
-	}
-	if cfg.URL == "" {
-		cli.ShowSubcommandHelp(ctx)
-		return nil
 	}
 
 	//data append
@@ -141,18 +142,19 @@ func actionToolsHttp(ctx *cli.Context, cfg *httpConfig, tplData any) error {
 	// data-raw
 	if cfg.DR != "" {
 		payload = strings.NewReader(tools.DrawTpl(tplData, cfg.DR))
-	}
-	// data-urlencode
-	if len(cfg.DU) != 0 {
+	} else if len(cfg.DU) != 0 {
+		// data-urlencode
 		if cfg.ContentType == "" {
-			cfg.ContentType = "x-www-form-urlencoded"
+			cfg.ContentType = "application/x-www-form-urlencoded"
 		}
 		tempBody := strings.Join(cfg.DU, `&`)
 
+		logger.Info("data-urlencode: ", tempBody)
 		payload = strings.NewReader(tools.DrawTpl(tplData, tempBody))
-	}
-	// form-data
-	if len(cfg.FormData) != 0 {
+	} else if len(cfg.DUM) != 0 {
+		payload = strings.NewReader(tools.DrawTpl(tplData, cfg.DUM.Encode()))
+	} else if len(cfg.FormData) != 0 {
+		// form-data
 		tempPayload := &bytes.Buffer{}
 		writer := multipart.NewWriter(tempPayload)
 		for _, v := range cfg.FormData {
@@ -248,7 +250,7 @@ func actionToolsHttp(ctx *cli.Context, cfg *httpConfig, tplData any) error {
 	}
 	defer resp.Body.Close()
 	body, _ := ioutil.ReadAll(resp.Body)
-	logger.CommonInfo("res status:", resp.Status)
+	logger.Info("res status:", resp.Status)
 	logger.Debug("res header: ", resp.Header)
 
 	// output
@@ -267,6 +269,7 @@ type httpConfig struct {
 	DR           string              `yaml:"data-raw"`
 	FlagDU       cli.StringSlice     `yaml:"-"`
 	DU           []string            `yaml:"data-urlencode"`
+	DUM          url.Values          `yaml:"data-urlencode-map"`
 	FlagFormData cli.StringSlice     `yaml:"-"`
 	FormData     []string            `yaml:"form-data"`
 	ContentType  string              `yaml:"-"`

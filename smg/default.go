@@ -29,6 +29,7 @@ func SystemCommand() *cli.Command {
 			defaultRemove(),
 			defaultUpgrade(),
 			defaultEchoServer(),
+			defaultTranslate(),
 		},
 	}
 	return command
@@ -60,7 +61,7 @@ func outputFn(cfg *outputConfig, res []byte) (err error) {
 		if _, err := tools.ReadOrCreateFile(fileName, res, true); err != nil {
 			return err
 		}
-		logger.CommonInfo("output file: ", fileName)
+		logger.CommonInfo("output file: ", "\n", fileName)
 	} else {
 		var outputBody string
 		if gjson.ValidBytes(res) {

@@ -20,6 +20,7 @@ import (
 )
 
 type H map[string]any
+type HString map[string]string
 
 func JoinSlash(s ...string) string {
 	if len(s) > 0 && s[0] == "" {
